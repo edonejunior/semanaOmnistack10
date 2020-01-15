@@ -1,12 +1,44 @@
-import React from 'react';
+//UseEffect é para disparar uma função especifica 
+//UseState para armazenar valores, no caso especifico latitude e longitude. 
+
+import React, {useState ,useEffect} from 'react';
 //Importar CSS dentro do JavaScript
 import './global.css';
 import './app.css';
 import './sidebar.css';
 import './main.css';
 
-
 function App() {
+  //Com o conceito de imutabilidade crio a variavel e seu valor para setar utilizando o Use State
+  const [latitude, setLatitude] = useState('');
+  const [longitude, setLongitude] = useState('');
+
+  const [github_username, setGithub_username] = useState('');
+  const [techs, setTechs] = useState('');
+
+  useEffect(()=> {
+    //Função nativa do HTML para pegar a posição do usuário.
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        //Pego as duas posições dentro do position que é o retorno da função.
+        const {latitude, longitude} = position.coords;
+        setLatitude(latitude);
+        setLongitude(longitude);
+
+      },
+      (err) => {
+        console.log(err);
+      },{
+        timeout:30000,
+      }
+    );
+  }, [])
+
+  async function handleAddDev(e){
+    e.preventDefault();
+    
+  }
+
   return (
     <div id="app">
     <aside>
@@ -14,24 +46,50 @@ function App() {
       <form >
 
         <div className="input-block">
-          <label htmlFor="github_usename">Usuario do Github</label>
-          <input name="github_usename" id="github_usename" required/>
+          <label htmlFor="github_username">Usuario do Github</label>
+          <input 
+          name="github_username" 
+          id="github_username" 
+          required
+          value={github_username}
+          onChange={e => setGithub_username(e.target.value)}
+          />
         </div>
 
         <div className="input-block">
           <label htmlFor="techs">Tecnologias</label>
-          <input name="techs" id="techs" required/>
+          <input
+          name="techs" 
+          id="techs" 
+          required
+          value={techs}
+          onChange = {e => setTechs(e.target.value)}
+          />
         </div>
 
         <div className="input-group">
           <div className="input-block">
             <label htmlFor="Latitude">Latitude</label>
-            <input name="Latitude" id="Latitude" required/>
+            <input 
+            type="number" 
+            name="Latitude" 
+            id="Latitude" 
+            required 
+            value={latitude}
+            onChange = {e => setLatitude(e.target.value)}
+            />
           </div>
 
           <div className="input-block">
             <label htmlFor="Longitude">Longitude</label>
-            <input name="Longitude" id="Longitude" required/>
+            <input 
+            type="number" 
+            name="Longitude" 
+            id="Longitude" 
+            required 
+            value={longitude}
+            onChange = {e => setLongitude(e.target.value)}
+            />
           </div>
         </div>
 
