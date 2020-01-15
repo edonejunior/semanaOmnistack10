@@ -14,6 +14,9 @@ function App() {
   const [latitude, setLatitude] = useState('');
   const [longitude, setLongitude] = useState('');
 
+  //Crio um state para armazenar os devs, e inicio com array
+  const [devs, setDevs] = useState([]);
+
   const [github_username, setGithub_username] = useState('');
   const [techs, setTechs] = useState('');
 
@@ -35,16 +38,32 @@ function App() {
     );
   }, [])
 
+  //quero que funciona apenas uma vez
+  useEffect(()=>{
+    //uso uma função para fazer o load
+    async function loadDevs(){
+      //faço uma constante que armazena a conulta de api.get
+      const response = await api.get('/devs');
+
+      setDevs(response.data)
+    }
+    loadDevs();
+  },[])
+
+  //função que rola por conta do form 
   async function handleAddDev(e){
     e.preventDefault();
-
     //aqui fazemos a consulta a API
     const response = await api.post('/devs', {
       github_username, techs, latitude, longitude
     })
+    //limpar campos
+    setGithub_username('');
+    setTechs('');
 
-    console.log(response.data);
-
+    //aqui adicionamos o novo dev a lista de devs, isso por que ele tem de carregar a lista de 
+    //devs e por após a lista esse novo dev.
+    setDevs([...devs, response.data]);
   }
 
   return (
@@ -106,51 +125,21 @@ function App() {
       </form>
     </aside>
     <main>
-      <ul>
-        <li className="dev-item">
+      <ul> 
+        {devs.map(dev => (
+          <li key={dev._id} className="dev-item">
           <header>
-            <img src="https://avatars1.githubusercontent.com/u/59746951?s=460&v=4" alt="Edvaldo Junior"/>
+            <img src={dev.avatar_url} alt={dev.name}/>
             <div className="user-info">
-              <strong>Edvaldo Junior</strong>
-              <span>PHP, React JS</span>
+              <strong>{dev.name}</strong>
+              <span>{dev.techs.join(', ')}</span>
             </div>
           </header>
-          <p>Teste BIO asuhdiajsdiasjdpsajdaspodkaspodkaspodkjsapodjas</p>
-          <a href="https://github.com/edonejunior">Acessar Perfil Github</a>
+          <p>{dev.bio}</p>
+          <a href={`https://github.com/${dev.github_username}`} >Acessar Perfil Github</a>
         </li>
-        <li className="dev-item">
-          <header>
-            <img src="https://avatars1.githubusercontent.com/u/59746951?s=460&v=4" alt="Edvaldo Junior"/>
-            <div className="user-info">
-              <strong>Edvaldo Junior</strong>
-              <span>PHP, React JS</span>
-            </div>
-          </header>
-          <p>Teste BIO asuhdiajsdiasjdpsajdaspodkaspodkaspodkjsapodjas</p>
-          <a href="https://github.com/edonejunior">Acessar Perfil Github</a>
-        </li>
-        <li className="dev-item">
-          <header>
-            <img src="https://avatars1.githubusercontent.com/u/59746951?s=460&v=4" alt="Edvaldo Junior"/>
-            <div className="user-info">
-              <strong>Edvaldo Junior</strong>
-              <span>PHP, React JS</span>
-            </div>
-          </header>
-          <p>Teste BIO asuhdiajsdiasjdpsajdaspodkaspodkaspodkjsapodjas</p>
-          <a href="https://github.com/edonejunior">Acessar Perfil Github</a>
-        </li>
-        <li className="dev-item">
-          <header>
-            <img src="https://avatars1.githubusercontent.com/u/59746951?s=460&v=4" alt="Edvaldo Junior"/>
-            <div className="user-info">
-              <strong>Edvaldo Junior</strong>
-              <span>PHP, React JS</span>
-            </div>
-          </header>
-          <p>Teste BIO asuhdiajsdiasjdpsajdaspodkaspodkaspodkjsapodjas</p>
-          <a href="https://github.com/edonejunior">Acessar Perfil Github</a>
-        </li>
+        ))}
+        
       </ul>
     </main>
   </div>
