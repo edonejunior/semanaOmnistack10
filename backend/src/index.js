@@ -2,6 +2,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const routes = require('./routes');
+const cors = require('cors')
 
 //instanciando o express
 const app = express();
@@ -11,6 +12,8 @@ mongoose.connect('mongodb+srv://userApps:userApps@cluster0-59wew.mongodb.net/wee
     useUnifiedTopology: true,
 })
 
+//Cors libera acesso externo para toda aplicação.
+app.use(cors())
 app.use(express.json());
 app.use(routes);
 

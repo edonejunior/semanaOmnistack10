@@ -2,6 +2,7 @@
 //UseState para armazenar valores, no caso especifico latitude e longitude. 
 
 import React, {useState ,useEffect} from 'react';
+import api from './services/api';
 //Importar CSS dentro do JavaScript
 import './global.css';
 import './app.css';
@@ -36,14 +37,21 @@ function App() {
 
   async function handleAddDev(e){
     e.preventDefault();
-    
+
+    //aqui fazemos a consulta a API
+    const response = await api.post('/devs', {
+      github_username, techs, latitude, longitude
+    })
+
+    console.log(response.data);
+
   }
 
   return (
     <div id="app">
     <aside>
       <strong>Cadastrar</strong>
-      <form >
+      <form onSubmit={handleAddDev}>
 
         <div className="input-block">
           <label htmlFor="github_username">Usuario do Github</label>
