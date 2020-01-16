@@ -10,7 +10,7 @@ function DevItem({dev}){
 
     async function excluirDev(props){
       await api.delete(`/devs?_id=${props.target.value}`);
-      Document.location.reload(true);
+      document.location.reload(true);
       }
 
     return (
