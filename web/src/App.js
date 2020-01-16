@@ -22,26 +22,25 @@ function App() {
   useEffect(()=>{
     //uso uma função para fazer o load
     async function loadDevs(){
-      //faço uma constante que armazena a conulta de api.get
-      const response = await api.get('/devs');
+    //faço uma constante que armazena a conulta de api.get
+    const response = await api.get('/devs');
 
-      setDevs(response.data)
+    setDevs(response.data)
     }
-    loadDevs();
+  loadDevs();
   },[])
 
-  //função que rola por conta do form 
-  async function handleAddDev(data){
-    
+    //função que rola por conta do form 
+    async function handleAddDev(data){
     //aqui fazemos a consulta a API
     const response = await api.post('/devs', data)
     
-
     //aqui adicionamos o novo dev a lista de devs, isso por que ele tem de carregar a lista de 
     //devs e por após a lista esse novo dev.
     setDevs([...devs, response.data]);
   }
 
+    
   return (
     <div id="app">
     <aside>

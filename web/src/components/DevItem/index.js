@@ -1,9 +1,18 @@
 import React from 'react';
+import api from '../../services/api';
 
 import './style.css';
 
 //Usamos a desestruturação para pegar o dev.
 function DevItem({dev}){
+
+  
+
+    async function excluirDev(props){
+      await api.delete(`/devs?_id=${props.target.value}`);
+      Document.location.reload(true);
+      }
+
     return (
         <li  className="dev-item">
           <header>
@@ -15,6 +24,7 @@ function DevItem({dev}){
           </header>
           <p>{dev.bio}</p>
           <a href={`https://github.com/${dev.github_username}`} >Acessar Perfil Github</a>
+          <p><button onClick={excluirDev} value={dev._id}>Excluir Dev</button></p>
         </li>
     )
 }
