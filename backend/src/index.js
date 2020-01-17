@@ -2,10 +2,17 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const routes = require('./routes');
-const cors = require('cors')
+const cors = require('cors');
+const http = require('http');
+const { setupWebsocket } = require('./websocket');
 
 //instanciando o express
 const app = express();
+
+//Estou retirando as requisições do express para poder trabalhar com elas
+const server = http.Server(app);
+
+setupWebsocket(server);
 //Connectionstring
 mongoose.connect('mongodb+srv://userApps:userApps@cluster0-59wew.mongodb.net/week10?retryWrites=true&w=majority', {
     useNewUrlParser: true,
@@ -18,5 +25,6 @@ app.use(express.json());
 app.use(routes);
 
 //Definindo a porta
-app.listen(3333);
+//Trocando por server pois funcionará da mesma maneira
+server.listen(3333);
 
