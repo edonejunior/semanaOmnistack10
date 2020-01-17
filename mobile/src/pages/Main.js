@@ -10,6 +10,7 @@ import {requestPermissionsAsync, getCurrentPositionAsync} from 'expo-location'
 import{MaterialIcons} from '@expo/vector-icons'
 
 import api from '../services/api';
+import socket, { connect } from '../services/socket';
 
 
 //Pego o navigation que é o props padrão dele, já com a desestruturação e paço la no onpress
@@ -46,6 +47,16 @@ function Main({navigation}){
         loadInitialPosition()
     },[]);
 
+    function setupWebsocket(){
+        const {latitude, longitude} = currentRegion;
+        
+        connect(
+            latitude,
+            longitude,
+            techs,
+        );
+    }
+
     async function loadDevs(){
         const {latitude, longitude} = currentRegion;
        
@@ -58,6 +69,8 @@ function Main({navigation}){
         });
         setDevs(response.data.devs);
         
+        setupWebsocket();
+
     }
 
     function handleRegionChanged(region){
