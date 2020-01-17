@@ -7,7 +7,9 @@ import MapView, {Marker, Callout} from 'react-native-maps'
 //Importar a localização
 import {requestPermissionsAsync, getCurrentPositionAsync} from 'expo-location'
 
-function Main(){
+
+//Pego o navigation que é o props padrão dele, já com a desestruturação e paço la no onpress
+function Main({navigation}){
     //Criamos um estado para armazenar as cordenadas iniciais
     const [currentRegion, setCurrentRegion] = useState(null);
     //Colocamos ele na função, que recebe uma função e quando executar
@@ -46,11 +48,14 @@ function Main(){
     //Agora passamos a posição inicial que calculamos acima
     //Abrimos o map e usamos como tag e usamos o marker dentro dele.
     //Dentro do marker mudamos a imagem
+    //onPress é quando clicar
     return (
         <MapView initialRegion={currentRegion} style={styles.map} >
             <Marker coordinate={{latitude:-22.9555537 , longitude: -46.5451525}}>
                 <Image style={styles.avatar} source={{uri:'https://avatars1.githubusercontent.com/u/59746951?s=460&v=4'}} />
-                <Callout>
+                <Callout onPress={()=>{
+                    navigation.navigate('Profile',{ github_username: 'edonejunior' })
+                }}>
                     <View style={styles.callout}>
                         <Text style={styles.devName}>Edvaldo Junior</Text>
                         <Text style={styles.devBio}>Teste da BIO hsauhsuahusuhsuau</Text>
