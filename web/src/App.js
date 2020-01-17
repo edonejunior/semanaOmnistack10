@@ -5,7 +5,7 @@ import React, {useState ,useEffect} from 'react';
 import api from './services/api';
 //Importar CSS dentro do JavaScript
 import './global.css';
-import './app.css';
+import './App.css';
 import './sidebar.css';
 import './main.css';
 
