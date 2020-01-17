@@ -1,11 +1,13 @@
 //useEffect é para montar algo assim que o componente carregar em tela.
 import React, {useState,useEffect} from 'react';
 //Importar os estilos pra não deixar inline
-import {StyleSheet, Image, View, Text} from 'react-native'
+import {StyleSheet, Image, View, Text, TextInput, TouchableOpacity} from 'react-native'
 //Importamos o mapa pra dentro desse arquivo. //Importamos marcações
 import MapView, {Marker, Callout} from 'react-native-maps'
 //Importar a localização
 import {requestPermissionsAsync, getCurrentPositionAsync} from 'expo-location'
+
+import{MaterialIcons} from '@expo/vector-icons'
 
 
 //Pego o navigation que é o props padrão dele, já com a desestruturação e paço la no onpress
@@ -50,6 +52,7 @@ function Main({navigation}){
     //Dentro do marker mudamos a imagem
     //onPress é quando clicar
     return (
+    <>
         <MapView initialRegion={currentRegion} style={styles.map} >
             <Marker coordinate={{latitude:-22.9555537 , longitude: -46.5451525}}>
                 <Image style={styles.avatar} source={{uri:'https://avatars1.githubusercontent.com/u/59746951?s=460&v=4'}} />
@@ -64,7 +67,22 @@ function Main({navigation}){
                 </Callout>
             </Marker>
         </MapView>
-    )
+        
+        <View style={styles.seachForm} >
+            <TextInput 
+            style={styles.seachInput}
+            placeholder="Buscar dev por techs..."
+            placeholderTextColor="#999"
+            autoCapitalize="words"
+            autoCorrect={false}
+            />
+
+            <TouchableOpacity onPress={()=>{}} style={styles.loadButton}>
+                <MaterialIcons name="my-location" size={20} color="#FFF" />
+            </TouchableOpacity>
+        </View>
+        </>
+    );
     
 } 
 
@@ -94,7 +112,33 @@ const styles = StyleSheet.create({
     },
     devTechs:{
         marginTop:5,
+    },
+    seachForm:{
+        position:'absolute',
+        bottom:20,
+        left:20,
+        right:20,
+        zIndex:5,
+        flexDirection:'row',
+    },
+    seachInput:{
+        flex:1,
+        height:50,
+        backgroundColor:'#FFF',
+        color:'#333',
+        borderRadius:25,
+        paddingHorizontal:20,
+        fontSize:16,
+        shadowColor: '#000',
+        shadowOpacity:0.2,
+        shadowOffset:{
+            width:4,
+            height:4,
+        },
+        elevation:2,
+        
     }
+
 })
 
 export default Main
